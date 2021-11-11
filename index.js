@@ -18,8 +18,7 @@ app.use(bodyparser.urlencoded({extended: true}));
 //);fdsfs
 //middlewares
 //app.use(bodyParser.json());
-  
-// root
+// root fdfsadfsf
 // mongo password: pegvI3-puxnok-wymmuc
 mongoose.connect("mongodb://127.0.0.1:27017/RRS").then(() => {
   console.log("Mongoose Connected. ");

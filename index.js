@@ -19,7 +19,7 @@ app.use(bodyparser.urlencoded({extended: true}));
 //middlewares
 //app.use(bodyParser.json());
 //  
-// pull test this is a pull test
+// test
 // root
 // mongo password: pegvI3-puxnok-wymmuc
 mongoose.connect("mongodb://127.0.0.1:27017/RRS").then(() => {

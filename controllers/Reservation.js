@@ -11,6 +11,9 @@ validateReservationRequest = (r) => {
     if(r.name.length < 3){
         return {error: true, msg: "name too short"}
     }
+    else{
+        return {error: false, msg: "good to go"}
+    }
 }
 
 exports.setReservation = async (req, res) => {
@@ -22,7 +25,7 @@ exports.setReservation = async (req, res) => {
          tables: tables, time: time, date: date})
     let ready = validateReservationRequest(r);
     if(ready.error == true) {
-        return res.status(404).json({msg: error.msg})
+        return res.status(404).json({msg: ready.msg})
     }
     r.save(
         function(err, re) {
@@ -42,9 +45,12 @@ exports.getAvailableTables = async (req, res) => {
     console.log("here")
     var timeBefore = ["", "", "", "", ""] // Array of time before selectedTime. interval of 15 minutes
     var { time, date } = req.query
+    if(time[0] == "0"){
+        time = time.substring(1)
+    }
     var lastTwo = time.slice(-2)
     var hour
-    var minute
+    var minute = 0
     for(var i = 0; i < 5; i++){
         if(i == 0){ // initial time
             if(isNumeric(time.substring(0,2))){ // hour is 10, 11, or 12.
@@ -54,7 +60,7 @@ exports.getAvailableTables = async (req, res) => {
                 hour = parseInt(time.substring(0,1)) 
                 minute = parseInt(time.substring(2,4))
             }
-            if(parseInt(time.substring(2,4)) < 15 ){ // time is X:14 or less
+            if(minute < 15 ){ // time is X:14 or less
                 hour = hour - 1
                 minute = 60 - (15 - minute)
                 timeBefore[0] = hour.toString() + ":" + minute.toString()
@@ -82,15 +88,12 @@ exports.getAvailableTables = async (req, res) => {
         if(timeBefore[i].length == 3){
             timeBefore[i] = timeBefore[i] + "0"
         }
-        console.log(timeBefore[i])
         timeBefore[i] = timeBefore[i] + " " + lastTwo
-    }
-    console.log("time: ", time)
-    console.log("date: ", date)
+        console.log(timeBefore[i])
 
-    timeBefore.forEach(element => {
-        console.log(element)
-    });
+    }
+    console.log(time)
+
     Reservation.find({$and: [{time: [time, timeBefore[0], timeBefore[1],
         timeBefore[2], timeBefore[3], timeBefore[4]]}, {date: date}]})
     .then(r => {

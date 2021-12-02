@@ -45,7 +45,6 @@ exports.signup = async (req, res) => {
 };
 
 exports.getUser = (req, res) => {
-  console.log(req)
   let { email } = req.query;
   User.findOne({ email: email })
     .then((user) => {
@@ -63,18 +62,20 @@ exports.getUser = (req, res) => {
 };
 
 exports.login = (req, res) => {
+  console.log(req.body)
   let { email, password } = req.body;
   User.findOne({ email: email })
     .then((user) => {
       if (user === null) {
         res.status(400).json({ msg: "email not found" });
+        console.log("here")
       } else {
         console.log("user found");
         bcrypt
           .compare(password, user.password)
           .then((isMatch) => {
             if (!isMatch) {
-              return res.status(400).json({ err: [{ password: "incorrect" }] });
+              return res.status(400).json({ msg: " password is incorrect" });
             }
             console.log("isMatch");
             let access_token = createJWT(user.email, user._id, 3600);
@@ -98,5 +99,6 @@ exports.login = (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({ err: err });
+    
     });
 };

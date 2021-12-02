@@ -30,7 +30,7 @@ const reservationSchema = new mongoose.Schema({
         required: true 
     },
     creditCardHold: {
-        type: String,
+        type: Number,
         required: false
     }
     },   

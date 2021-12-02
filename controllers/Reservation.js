@@ -18,20 +18,24 @@ validateReservationRequest = (r) => {
 
 exports.setReservation = async (req, res) => {
     const {
-        name, diners, tables, time, date
+        email, phone, name, diners, tables, time, date, creditCardHold
     } = req.body
  
-    var r = new Reservation({name: name, diners: diners,
-         tables: tables, time: time, date: date})
+    var r = new Reservation({email: email, phone: phone, name: name, diners: diners,
+         tables: tables, time: time, date: date, creditCardHold: creditCardHold})
     let ready = validateReservationRequest(r);
     if(ready.error == true) {
         return res.status(404).json({msg: ready.msg})
     }
     r.save(
         function(err, re) {
-            console.log(err)
-            console.log(res)
-        if (err) return res.status(400),json({err: err});
+            //console.log(err)
+            //console.log(res)
+        if (err){ 
+            console.log("err on set setReservation")
+            return res.status(400).json({msg: "Error on Backend"});
+        }
+        console.log("reservation set")
         return res.status(200).json({reservation: re})
     })
 }

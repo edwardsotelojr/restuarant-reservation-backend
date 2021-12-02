@@ -5,6 +5,14 @@ const reservationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    phone: {
+        type: Number,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
     diners: {
         type: Number,
         required: true
@@ -14,7 +22,7 @@ const reservationSchema = new mongoose.Schema({
         required: true
     },
     tables: {
-        type: [Number],
+        type: [String],
         required: true
     },
     date: {
@@ -22,7 +30,7 @@ const reservationSchema = new mongoose.Schema({
         required: true 
     },
     creditCardHold: {
-        type: String,
+        type: Number,
         required: false
     }
     },   

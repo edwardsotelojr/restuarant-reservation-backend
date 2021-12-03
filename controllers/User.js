@@ -84,6 +84,7 @@ exports.login = (req, res) => {
                 res.status(500).json({ err: err });
               }
               if (decoded) {
+                console.log(user)
                 return res.status(200).json({
                   success: true,
                   token: access_token,

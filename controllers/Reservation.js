@@ -2,19 +2,14 @@ const User = require("../models/User");
 const Reservation = require("../models/Reservation");
 
 exports.getReservations = async (req, res) => {
-    Reservation.find().then(reservations => {
+    const{email} = req.query
+    console.log(req.query)
+    Reservation.find({ email: email }).then(reservations => {
+        console.log(reservations)
         res.status(200).json({reservations: reservations})
     })
 }
-
-validateReservationRequest = (r) => {
-    if(r.name.length < 3){
-        return {error: true, msg: "name too short"}
-    }
-    else{
-        return {error: false, msg: "good to go"}
-    }
-}
+ 
 
 exports.setReservation = async (req, res) => {
     const {
@@ -23,10 +18,7 @@ exports.setReservation = async (req, res) => {
  
     var r = new Reservation({email: email, phone: phone, name: name, diners: diners,
          tables: tables, time: time, date: date, creditCardHold: creditCardHold})
-    let ready = validateReservationRequest(r);
-    if(ready.error == true) {
-        return res.status(404).json({msg: ready.msg})
-    }
+    
     r.save(
         function(err, re) {
             //console.log(err)
